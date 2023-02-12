@@ -7,7 +7,7 @@ Summary:	Conversion of LaTeX math formulas to MathML or OMML
 Summary(pl.UTF-8):	Przekształcanie LaTeXowych wzorów matematycznych do MathML-a lub OMML-a
 Name:		ghc-%{pkgname}
 Version:	0.12.0.2
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Development/Languages
 #Source0Download: http://hackage.haskell.org/package/texmath
