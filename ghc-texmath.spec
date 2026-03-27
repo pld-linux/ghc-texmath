@@ -14,29 +14,35 @@ Group:		Development/Languages
 Source0:	http://hackage.haskell.org/package/%{pkgname}-%{version}/%{pkgname}-%{version}.tar.gz
 # Source0-md5:	2dcb3994f890643d4bcecee90032e82f
 URL:		http://hackage.haskell.org/package/texmath
-BuildRequires:	ghc >= 6.12.3
+BuildRequires:	ghc >= 7.10.1
 BuildRequires:	ghc-aeson
 BuildRequires:	ghc-base >= 4.8
+BuildRequires:	ghc-base < 5
 BuildRequires:	ghc-bytestring
 BuildRequires:	ghc-containers
 BuildRequires:	ghc-mtl
 BuildRequires:	ghc-network-uri >= 2.6
 BuildRequires:	ghc-pandoc-types >= 1.20
+BuildRequires:	ghc-pandoc-types < 1.22
 BuildRequires:	ghc-parsec >= 3
 BuildRequires:	ghc-syb >= 0.4.2
+BuildRequires:	ghc-syb < 0.8
 BuildRequires:	ghc-text
 BuildRequires:	ghc-xml
 %if %{with prof}
-BuildRequires:	ghc-prof >= 6.12.3
+BuildRequires:	ghc-prof >= 7.10.1
 BuildRequires:	ghc-aeson-prof
 BuildRequires:	ghc-base-prof >= 4.8
+BuildRequires:	ghc-base-prof < 5
 BuildRequires:	ghc-bytestring-prof
 BuildRequires:	ghc-containers-prof
 BuildRequires:	ghc-mtl-prof
 BuildRequires:	ghc-network-uri-prof >= 2.6
 BuildRequires:	ghc-pandoc-types-prof >= 1.20
+BuildRequires:	ghc-pandoc-types-prof < 1.22
 BuildRequires:	ghc-parsec-prof >= 3
 BuildRequires:	ghc-syb-prof >= 0.4.2
+BuildRequires:	ghc-syb-prof < 0.8
 BuildRequires:	ghc-text-prof
 BuildRequires:	ghc-xml-prof
 %endif
@@ -126,6 +132,7 @@ runhaskell Setup.lhs configure -v2 \
 	--docdir=%{_docdir}/%{name}-%{version}
 
 runhaskell Setup.lhs build
+
 runhaskell Setup.lhs haddock
 
 %install
@@ -136,8 +143,7 @@ runhaskell Setup.lhs copy --destdir=$RPM_BUILD_ROOT
 
 # work around automatic haddock docs installation
 %{__rm} -rf %{name}-%{version}-doc
-cp -a $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version} %{name}-%{version}-doc
-%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version}
+%{__mv} $RPM_BUILD_ROOT%{_docdir}/%{name}-%{version} %{name}-%{version}-doc
 
 runhaskell Setup.lhs register \
 	--gen-pkg-config=$RPM_BUILD_ROOT%{_libdir}/%{ghcdir}/package.conf.d/%{pkgname}.conf
@@ -153,6 +159,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc README.markdown changelog
 %attr(755,root,root) %{_bindir}/texmath
 %{_libdir}/%{ghcdir}/package.conf.d/%{pkgname}.conf
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}
